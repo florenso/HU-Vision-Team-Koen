@@ -49,13 +49,10 @@ RGB RGBImageStudent::getPixel(int i) const {
 
 void RGBImageStudent::translateToNewWith(int oldWidth, int oldheight, int newWidth, int newHeight){
 	if (newWidth > oldheight){
-		RGB* newImg;
-		newImg = new RGB[newHeight*newWidth];
+		img = new RGB[newHeight*newWidth];
 		for (int i = oldheight*oldWidth; i >= 0; --i){
-			newImg[i + (((int)i / newWidth)*(newWidth - oldWidth))] = img[i];
+			img[i + (((int)i / newWidth)*(newWidth - oldWidth))] = img[i];
+			img[i] = RGB::RGB(0,0,0);
 		}
-		//delete[] img;
-		img = newImg;
-		delete[] newImg;
 	}
 }

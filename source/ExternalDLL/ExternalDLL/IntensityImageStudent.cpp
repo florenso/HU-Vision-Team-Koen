@@ -50,13 +50,9 @@ Intensity IntensityImageStudent::getPixel(int i) const {
 
 void IntensityImageStudent::translateToNewWith(int oldWidth, int oldheight, int newWidth, int newHeight){
 	if (newWidth > oldheight){
-		char* newImg;
-		newImg = new char[newHeight*newWidth];
+		img = new char[newHeight*newWidth];
 		for (int i = oldheight*oldWidth; i >= 0; --i){
-			newImg[i + (((int)i / newWidth)*(newWidth - oldWidth))] = img[i];
+			img[i + (((int)i / newWidth)*(newWidth - oldWidth))] = img[i];
 		}
-		//delete[] img;
-		img = newImg;
-		delete[] newImg;
 	}
 }
