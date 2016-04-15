@@ -1,16 +1,16 @@
 #include "IntensityImageStudent.h"
 
 IntensityImageStudent::IntensityImageStudent() : IntensityImage() {
-	img = new char[0];
+	img = new Intensity[1]{Intensity{ 0 }};
 }
 
 IntensityImageStudent::IntensityImageStudent(const IntensityImageStudent &other) : IntensityImage(other.getWidth(), other.getHeight()) {
-	img = new char[getWidth()*getHeight()];
+	img = new Intensity[getWidth()*getHeight()]{Intensity{ 0 }};
 	
 }
 
 IntensityImageStudent::IntensityImageStudent(const int width, const int height) : IntensityImage(width, height) {
-	img = new char[width*height];
+	img = new Intensity[width*height]{Intensity{ 0 }};
 }
 
 IntensityImageStudent::~IntensityImageStudent() {
@@ -50,9 +50,13 @@ Intensity IntensityImageStudent::getPixel(int i) const {
 
 void IntensityImageStudent::translateToNewWith(int oldWidth, int oldheight, int newWidth, int newHeight){
 	if (newWidth > oldheight){
-		img = new char[newHeight*newWidth];
+		Intensity * newImg;
+		newImg = new Intensity[newHeight*newWidth]{Intensity{ 0 }};
 		for (int i = oldheight*oldWidth; i >= 0; --i){
-			img[i + (((int)i / newWidth)*(newWidth - oldWidth))] = img[i];
+			newImg[i + (((int)i / newWidth)*(newWidth - oldWidth))] = img[i];
+
 		}
+		delete[] img;
+		img = newImg;
 	}
 }

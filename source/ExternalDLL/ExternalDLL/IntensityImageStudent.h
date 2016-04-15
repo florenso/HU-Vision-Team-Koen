@@ -22,6 +22,6 @@ public:
 	Intensity getPixel(int x, int y) const;
 	Intensity getPixel(int i) const;
 private:
-	char  *img;
+	Intensity * img;
 	void translateToNewWith(int oldWidth, int oldheight, int newWidth, int newHeight);
 };

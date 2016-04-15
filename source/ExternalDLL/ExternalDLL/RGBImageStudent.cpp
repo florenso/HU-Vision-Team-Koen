@@ -1,16 +1,16 @@
 #include "RGBImageStudent.h"
 
 RGBImageStudent::RGBImageStudent() : RGBImage() {
-	img = new RGB[0];
+	img = new RGB[1]{RGB{ 0, 0, 0 }};
 }
 
 RGBImageStudent::RGBImageStudent(const RGBImageStudent &other) : RGBImage(other.getWidth(), other.getHeight()) {
-	img = new RGB[getWidth()*getHeight()];
+	img = new RGB[getWidth()*getHeight()]{RGB{ 0, 0, 0 }};
 }
 
 
 RGBImageStudent::RGBImageStudent(const int width, const int height) : RGBImage(width, height) {
-	img = new RGB[width*height];
+	img = new RGB[width*height]{RGB{ 0, 0, 0 }};;
 }
 
 RGBImageStudent::~RGBImageStudent() {
@@ -49,10 +49,13 @@ RGB RGBImageStudent::getPixel(int i) const {
 
 void RGBImageStudent::translateToNewWith(int oldWidth, int oldheight, int newWidth, int newHeight){
 	if (newWidth > oldheight){
-		img = new RGB[newHeight*newWidth];
+		RGB* newImg;
+		newImg = new RGB[newHeight*newWidth];
 		for (int i = oldheight*oldWidth; i >= 0; --i){
-			img[i + (((int)i / newWidth)*(newWidth - oldWidth))] = img[i];
-			img[i] = RGB::RGB(0,0,0);
+			newImg[i + (((int)i / newWidth)*(newWidth - oldWidth))] = img[i];
+			
 		}
+		delete[] img;
+		img = newImg;
 	}
 }
