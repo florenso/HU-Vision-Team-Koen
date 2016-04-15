@@ -22,4 +22,8 @@ public:
 
 	RGB getPixel(int x, int y) const;
 	RGB getPixel(int i) const;
+private:
+	RGB * img;
+	void translateToNewWith(int oldWidth, int oldheight, int newWidth, int newHeight);
+
 };

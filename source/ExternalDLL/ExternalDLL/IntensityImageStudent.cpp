@@ -55,7 +55,7 @@ void IntensityImageStudent::translateToNewWith(int oldWidth, int oldheight, int 
 		for (int i = oldheight*oldWidth; i >= 0; --i){
 			newImg[i + (((int)i / newWidth)*(newWidth - oldWidth))] = img[i];
 		}
-		delete[] img;
+		//delete[] img;
 		img = newImg;
 		delete[] newImg;
 	}
