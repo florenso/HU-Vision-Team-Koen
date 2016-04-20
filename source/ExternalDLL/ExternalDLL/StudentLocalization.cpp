@@ -1,6 +1,10 @@
 #include "StudentLocalization.h"
 
 bool StudentLocalization::stepFindHead(const IntensityImage &image, FeatureMap &features) const {
+	Intensity kippetje = image.getPixel(104, 119);
+	std::cout << "Pixel on 3,3 " << "\n" << int(kippetje) << "\n";
+
+
 	return false;
 }
 
