@@ -15,6 +15,7 @@ public:
 	bool stepFindChinContours(const IntensityImage &image, FeatureMap &features) const;
 	bool stepFindNoseEndsAndEyes(const IntensityImage &image, FeatureMap &features) const;
 	bool stepFindExactEyes(const IntensityImage &image, FeatureMap &features) const;
-
+private:
+	unsigned int StudentLocalization::headTop(const IntensityImage &image)const;
 };
 
