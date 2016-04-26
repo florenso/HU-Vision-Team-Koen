@@ -23,11 +23,66 @@ int main(int argc, char * argv[]) {
 	ImageIO::debugFolder = "C:\\Users\\koen\\Documents\\HU-Vision-Team-Koen\\debugfolder";
 	ImageIO::isInDebugMode = true; //If set to false the ImageIO class will skip any image save function calls
 
+	std::string imgfile;
+	/*
+	1 =fail
+	2 = succes
+	3 = succes
+	4 = succes (step 5 failed)
+	5 = succes
+	6 = succes (step 4 failed)
+	7 = failed (koen wtf?!?)
+	8 = failed
+	9 = succes (step 5 failed)
+	10 = failed
+	11 = succes ( step 5 failed)
+	12 = succes
 
-
+	*/
+	switch (7)
+	{
+	case 1:
+		imgfile = "C:\\Users\\koen\\Documents\\HU-Vision-Team-Koen\\testsets\\Set A\\TestSet Images\\arno-1.png";
+		break;
+	case 2:
+		imgfile = "C:\\Users\\koen\\Documents\\HU-Vision-Team-Koen\\testsets\\Set A\\TestSet Images\\bouke-1.png";
+		break;
+	case 3:
+		imgfile = "C:\\Users\\koen\\Documents\\HU-Vision-Team-Koen\\testsets\\Set A\\TestSet Images\\female-1.png";
+		break;
+	case 4:
+		imgfile = "C:\\Users\\koen\\Documents\\HU-Vision-Team-Koen\\testsets\\Set A\\TestSet Images\\female-2.png";
+		break;
+	case 5:
+		imgfile = "C:\\Users\\koen\\Documents\\HU-Vision-Team-Koen\\testsets\\Set A\\TestSet Images\\female-3.png";
+		break;
+	case 6:
+		imgfile = "C:\\Users\\koen\\Documents\\HU-Vision-Team-Koen\\testsets\\Set A\\TestSet Images\\koen-2.png";
+		break;
+	case 7:
+		imgfile = "C:\\Users\\koen\\Documents\\HU-Vision-Team-Koen\\testsets\\Set A\\TestSet Images\\male-1.png";
+		break;
+	case 8:
+		imgfile = "C:\\Users\\koen\\Documents\\HU-Vision-Team-Koen\\testsets\\Set A\\TestSet Images\\male-2.png";
+		break;
+	case 9:
+		imgfile = "C:\\Users\\koen\\Documents\\HU-Vision-Team-Koen\\testsets\\Set A\\TestSet Images\\male-3.png";
+		break;
+	case 10:
+		imgfile = "C:\\Users\\koen\\Documents\\HU-Vision-Team-Koen\\testsets\\Set A\\TestSet Images\\milf-3.png";
+		break;
+	case 11:
+		imgfile = "C:\\Users\\koen\\Documents\\HU-Vision-Team-Koen\\testsets\\Set A\\TestSet Images\\pineapple.png";
+		break;
+	case 12:
+		imgfile = "C:\\Users\\koen\\Documents\\HU-Vision-Team-Koen\\testsets\\Set A\\TestSet Images\\child-1.png";
+		break;
+	default:
+		imgfile = "C:\\Users\\koen\\Documents\\HU-Vision-Team-Koen\\testsets\\Set A\\TestSet Images\\child-1.png";
+	}
 
 	RGBImage * input = ImageFactory::newRGBImage();
-	if (!ImageIO::loadImage("C:\\Users\\koen\\Documents\\HU-Vision-Team-Koen\\testsets\\Set A\\TestSet Images\\female-3.png", *input)) {
+	if (!ImageIO::loadImage(imgfile, *input)) {
 		std::cout << "Image could not be loaded!" << std::endl;
 		system("pause");
 		return 0;

@@ -5,6 +5,18 @@
 #include "HereBeDragons.h"
 #include "ImageIO.h"
 
+struct pixelCount {
+	pixelCount(int leftCount, int middelCount,int rightCount){
+		left = leftCount;
+		middel = middelCount;
+		right = rightCount;
+	}
+	//pixelCount(const IntensityImage &image,int y ,int left, int middel, int right,){}
+	int left;
+	int middel;
+	int right;
+};
+
 Feature StudentLocalization::headTop(const IntensityImage &image) const{
 	unsigned int center = image.getWidth()/2;
 	const unsigned int default_y_step = 1;
@@ -99,8 +111,94 @@ bool StudentLocalization::stepFindHead(const IntensityImage &imageIn, FeatureMap
 		return p1.second < p2.second; })->first;
 
 
-	features.putFeature(Feature(Feature::FEATURE_HEAD_LEFT_SIDE, Point2D<double>(leftSideXaxis, 116.0)));
-	features.putFeature(Feature(Feature::FEATURE_HEAD_RIGHT_SIDE, Point2D<double>(rightSideXaxis, 116.0)));
+	//test code koen
+	const int whiteCountMax = 25;
+
+	int y = features.getFeature(Feature::FEATURE_HEAD_TOP).getY();
+	//seek first pixel
+	for (y; y < imageIn.getHeight(); ++y){
+		if (imageIn.getPixel(leftSideXaxis, y) < 50){
+			break;
+		}
+	}
+	//y = y + 5;
+	std::cout << "line begins on y: " << y << " on x:" << leftSideXaxis << std::endl;
+	//seek last pixel
+	int whiteCount = 0;
+	int lastPixelAt = 0;
+	for (y; y < imageIn.getHeight(); ++y){
+		++whiteCount;
+		//if pixel is black....
+		if (imageIn.getPixel(leftSideXaxis, y) < 50){
+			whiteCount = 0;
+			lastPixelAt = y;
+			std::cout << "found black pixel @ " << y << std::endl;
+		}
+		/*else{
+			//if pixel is black....
+			int a = 2;
+			while (a < 20)
+			{	//test if pixel left from left side is black
+				if (imageIn.getPixel(leftSideXaxis - a, y) < 50){
+					whiteCount = 0;
+					lastPixelAt = y;
+					std::cout << "found black pixel " << a <<" pixels left @ " << y << std::endl;
+					break;
+				}
+				a++;
+			}
+			
+		}*/
+		if (whiteCount>whiteCountMax){
+			break;
+		}
+
+	}
+	int leftLastPixelAt = lastPixelAt;
+
+	std::cout << "doing right side" << std::endl;
+	y = 0;
+	for (y; y < imageIn.getHeight(); ++y){
+		if (imageIn.getPixel(rightSideXaxis, y) < 50){
+			break;
+		}
+	}
+	 whiteCount = 0;
+	 lastPixelAt = 0;
+	for (y; y < imageIn.getHeight(); ++y){
+		++whiteCount;
+		//if pixel is black....
+		if (imageIn.getPixel(rightSideXaxis, y) < 50){
+			whiteCount = 0;
+			lastPixelAt = y;
+			std::cout << "found black pixel @ " << y << std::endl;
+		}
+		if (whiteCount>whiteCountMax){
+			break;
+		}
+
+	}
+	int rightLastPixelAt = lastPixelAt;
+
+	if (leftLastPixelAt<rightLastPixelAt){
+		lastPixelAt = leftLastPixelAt;
+	}
+
+
+	std::cout << "last pixel @: " << lastPixelAt << std::endl;
+
+
+
+
+	//einde testcode koen
+
+
+
+
+
+
+	features.putFeature(Feature(Feature::FEATURE_HEAD_LEFT_SIDE, Point2D<double>(leftSideXaxis, lastPixelAt)));
+	features.putFeature(Feature(Feature::FEATURE_HEAD_RIGHT_SIDE, Point2D<double>(rightSideXaxis, lastPixelAt)));
 
 	std::cout << "Left Side location x-axis:  (" << features.getFeature(Feature::FEATURE_HEAD_LEFT_SIDE).getX() << ", " << features.getFeature(Feature::FEATURE_HEAD_LEFT_SIDE).getY() << ")\n";
 	std::cout << "Right Side location x-axis:  (" << features.getFeature(Feature::FEATURE_HEAD_RIGHT_SIDE).getX() << ", " << features.getFeature(Feature::FEATURE_HEAD_RIGHT_SIDE).getY() << ")\n";
