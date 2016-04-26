@@ -121,7 +121,6 @@ bool StudentLocalization::stepFindHead(const IntensityImage &imageIn, FeatureMap
 			break;
 		}
 	}
-	//y = y + 5;
 	std::cout << "line begins on y: " << y << " on x:" << leftSideXaxis << std::endl;
 	//seek last pixel
 	int whiteCount = 0;
@@ -134,21 +133,6 @@ bool StudentLocalization::stepFindHead(const IntensityImage &imageIn, FeatureMap
 			lastPixelAt = y;
 			std::cout << "found black pixel @ " << y << std::endl;
 		}
-		/*else{
-			//if pixel is black....
-			int a = 2;
-			while (a < 20)
-			{	//test if pixel left from left side is black
-				if (imageIn.getPixel(leftSideXaxis - a, y) < 50){
-					whiteCount = 0;
-					lastPixelAt = y;
-					std::cout << "found black pixel " << a <<" pixels left @ " << y << std::endl;
-					break;
-				}
-				a++;
-			}
-			
-		}*/
 		if (whiteCount>whiteCountMax){
 			break;
 		}
