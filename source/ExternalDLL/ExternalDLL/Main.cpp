@@ -27,7 +27,7 @@ int main(int argc, char * argv[]) {
 
 
 	RGBImage * input = ImageFactory::newRGBImage();
-	if (!ImageIO::loadImage("C:\\Users\\koen\\Documents\\HU-Vision-Team-Koen\\testsets\\Set A\\TestSet Images\\female-3.png", *input)) {
+	if (!ImageIO::loadImage("C:\\Users\\koen\\Documents\\HU-Vision-Team-Koen\\testsets\\Set A\\TestSet Images\\child-1.png", *input)) {
 		std::cout << "Image could not be loaded!" << std::endl;
 		system("pause");
 		return 0;
@@ -64,7 +64,7 @@ int main(int argc, char * argv[]) {
 bool executeSteps(DLLExecution * executor) {
 
 	//Execute the four Pre-processing steps
-	if (!executor->executePreProcessingStep1(true)) {
+	if (!executor->executePreProcessingStep1(false)) {
 		std::cout << "Pre-processing step 1 failed!" << std::endl;
 		return false;
 	}

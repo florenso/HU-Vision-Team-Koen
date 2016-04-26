@@ -68,22 +68,30 @@ bool StudentLocalization::stepFindHead(const IntensityImage &imageIn, FeatureMap
 	
 	int width = imageIn.getWidth();
 	int height = imageIn.getHeight();
-	int centerXaxis = features.getFeature(Feature::FEATURE_HEAD_TOP).getX();
+	int headTopX = features.getFeature(Feature::FEATURE_HEAD_TOP).getX();
+	int headTopY = features.getFeature(Feature::FEATURE_HEAD_TOP).getY();
+	int percentageForHead = 30;
+	
+
 	int possibleCenterYaxis = imageIn.getHeight() / 2;
 	int stepY = 1;
 	int stepX = 2;
 	int margeCenterLeftRight = 5; //in the middle of the image, some points are ignored 5 + 5 = 10.
+	int margeLeftAndRight = 6;
+	int stepTwoY = 4;
+	int stepTwoX = 1;
+
 	std::map <int, int> numberOfPixelsPerXaxisHalfLeftSide{};
 	std::map <int, int> numberOfPixelsPerXaxisHalfRightSide{};
 
 	for (int dX = 0; dX < width; dX += stepX){
-		for (int dY = 0; dY < height; dY += stepY){
+		for (int dY = 0; dY < (height - headTopY); dY += stepY){
 			Intensity currentPixel = imageIn.getPixel(dX, dY);
 			if (currentPixel == 0){
-				if (dX <= (centerXaxis - margeCenterLeftRight)){ //left side of head with marge
+				if (dX <= (headTopX - margeCenterLeftRight)){ //left side of head with marge
 					numberOfPixelsPerXaxisHalfLeftSide[dX] = numberOfPixelsPerXaxisHalfLeftSide[dX] + 1;
 				} 
-				else if (dX >= (centerXaxis + margeCenterLeftRight)){ //right side of head with marge
+				else if (dX >= (headTopX + margeCenterLeftRight)){ //right side of head with marge
 					numberOfPixelsPerXaxisHalfRightSide[dX] = numberOfPixelsPerXaxisHalfRightSide[dX] + 1;
 				}
 			}
@@ -98,9 +106,26 @@ bool StudentLocalization::stepFindHead(const IntensityImage &imageIn, FeatureMap
 		[](const std::pair<int, int>& p1, const std::pair<int, int>& p2) {
 		return p1.second < p2.second; })->first;
 
+	/*
+	std::map <int, int> numberOfPixelsPerYaxisHead{};
 
-	features.putFeature(Feature(Feature::FEATURE_HEAD_LEFT_SIDE, Point2D<double>(leftSideXaxis, 116.0)));
-	features.putFeature(Feature(Feature::FEATURE_HEAD_RIGHT_SIDE, Point2D<double>(rightSideXaxis, 116.0)));
+	for (int dY = int(height - ((height - headTopY) * (100 - percentageForHead)) / 100); dY < height; dY += stepTwoY){
+		for (int dX = (leftSideXaxis + margeLeftAndRight); dX < (headTopX - (margeCenterLeftRight*4) ); dX += stepTwoX){ //checking only left side of the head to determine wangs.
+			Intensity currentPixel = imageIn.getPixel(dX, dY);
+			if (currentPixel == 0){
+				numberOfPixelsPerYaxisHead[dY] += 1;
+			}
+		}
+	}
+
+	for (auto it = numberOfPixelsPerYaxisHead.cbegin(); it != numberOfPixelsPerYaxisHead.cend(); ++it)
+	{
+		std::cout << it->first << " --> " << it->second << "\n";
+	}
+	*/
+
+	features.putFeature(Feature(Feature::FEATURE_HEAD_LEFT_SIDE, Point2D<double>(leftSideXaxis, possibleCenterYaxis)));
+	features.putFeature(Feature(Feature::FEATURE_HEAD_RIGHT_SIDE, Point2D<double>(rightSideXaxis, possibleCenterYaxis)));
 
 	std::cout << "Left Side location x-axis:  (" << features.getFeature(Feature::FEATURE_HEAD_LEFT_SIDE).getX() << ", " << features.getFeature(Feature::FEATURE_HEAD_LEFT_SIDE).getY() << ")\n";
 	std::cout << "Right Side location x-axis:  (" << features.getFeature(Feature::FEATURE_HEAD_RIGHT_SIDE).getX() << ", " << features.getFeature(Feature::FEATURE_HEAD_RIGHT_SIDE).getY() << ")\n";
@@ -117,8 +142,6 @@ bool StudentLocalization::stepFindHead(const IntensityImage &imageIn, FeatureMap
 
 	IntensityImage * image = ImageFactory::newIntensityImage();
 	HereBeDragons::SonnetCLI(imageIn, *image);
-
-	ImageIO::saveIntensityImage(*image, ImageIO::getDebugFileName("Localization-1/nose-removed.png"));
 
 	cv::Mat outImage;
 	HereBeDragons::HerLoveForWhoseDearLoveIRiseAndFall(*image, outImage);
