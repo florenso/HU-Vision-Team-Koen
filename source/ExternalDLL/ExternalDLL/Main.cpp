@@ -39,7 +39,8 @@ int main(int argc, char * argv[]) {
 	12 = succes
 
 	*/
-	switch (12)
+
+	switch (1)
 	{
 	case 1:
 		imgfile = "C:\\Users\\koen\\Documents\\HU-Vision-Team-Koen\\testsets\\Set A\\TestSet Images\\arno-1.png";
@@ -82,6 +83,7 @@ int main(int argc, char * argv[]) {
 	}
 
 	RGBImage * input = ImageFactory::newRGBImage();
+
 	if (!ImageIO::loadImage(imgfile, *input)) {
 		std::cout << "Image could not be loaded!" << std::endl;
 		system("pause");
@@ -107,19 +109,10 @@ int main(int argc, char * argv[]) {
 	return 1;
 }
 
-
-
-
-
-
-
-
-
-
 bool executeSteps(DLLExecution * executor) {
 
 	//Execute the four Pre-processing steps
-	if (!executor->executePreProcessingStep1(true)) {
+	if (!executor->executePreProcessingStep1(false)) {
 		std::cout << "Pre-processing step 1 failed!" << std::endl;
 		return false;
 	}
