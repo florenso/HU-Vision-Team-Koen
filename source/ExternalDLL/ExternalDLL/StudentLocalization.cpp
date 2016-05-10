@@ -88,7 +88,7 @@ bool StudentLocalization::stepFindHead(const IntensityImage &imageIn, FeatureMap
 	int possibleCenterYaxis = imageIn.getHeight() / 2;
 	int stepY = 1;
 	int stepX = 2;
-	int margeCenterLeftRight = 5; //in the middle of the image, some points are ignored 5 + 5 = 10.
+	int margeCenterLeftRight = 10; //in the middle of the image, some points are ignored 5 + 5 = 10.
 	int margeLeftAndRight = 6;
 	int stepTwoY = 4;
 	int stepTwoX = 1;

@@ -35,7 +35,7 @@ int main(int argc, char * argv[]) {
 
 	*/
 
-	switch (7)
+	switch (4)
 	{
 	case 1:
 		imgfile = "C:\\Users\\koen\\Documents\\HU-Vision-Team-Koen\\testsets\\Set A\\TestSet Images\\female-1.png";
