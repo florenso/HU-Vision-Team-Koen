@@ -25,58 +25,38 @@ int main(int argc, char * argv[]) {
 
 	std::string imgfile;
 	/*
-	1 =fail
-	2 = succes
-	3 = succes
-	4 = succes (step 5 failed)
-	5 = succes
-	6 = succes (step 4 failed)
-	7 = failed (koen wtf?!?)
-	8 = failed
-	9 = succes (step 5 failed)
-	10 = failed
-	11 = succes ( step 5 failed)
-	12 = succes
+	1: female-1.png	= succes
+	2: female-3.png = succes
+	3: male-1.png	= Localization step 4 failed: eyes have not been found!
+	4: male-2.png	= Localization step 4 failed: eyes have not been found!
+	5: child-1.png	= succes
+	6: kippetje.png = Localization step 5 failed!
+	7: blabla.png	=
 
 	*/
 
-	switch (1)
+	switch (7)
 	{
 	case 1:
-		imgfile = "C:\\Users\\koen\\Documents\\HU-Vision-Team-Koen\\testsets\\Set A\\TestSet Images\\arno-1.png";
-		break;
-	case 2:
-		imgfile = "C:\\Users\\koen\\Documents\\HU-Vision-Team-Koen\\testsets\\Set A\\TestSet Images\\bouke-1.png";
-		break;
-	case 3:
 		imgfile = "C:\\Users\\koen\\Documents\\HU-Vision-Team-Koen\\testsets\\Set A\\TestSet Images\\female-1.png";
 		break;
-	case 4:
-		imgfile = "C:\\Users\\koen\\Documents\\HU-Vision-Team-Koen\\testsets\\Set A\\TestSet Images\\female-2.png";
-		break;
-	case 5:
+	case 2:
 		imgfile = "C:\\Users\\koen\\Documents\\HU-Vision-Team-Koen\\testsets\\Set A\\TestSet Images\\female-3.png";
 		break;
-	case 6:
-		imgfile = "C:\\Users\\koen\\Documents\\HU-Vision-Team-Koen\\testsets\\Set A\\TestSet Images\\koen-2.png";
-		break;
-	case 7:
+	case 3:
 		imgfile = "C:\\Users\\koen\\Documents\\HU-Vision-Team-Koen\\testsets\\Set A\\TestSet Images\\male-1.png";
 		break;
-	case 8:
+	case 4:
 		imgfile = "C:\\Users\\koen\\Documents\\HU-Vision-Team-Koen\\testsets\\Set A\\TestSet Images\\male-2.png";
 		break;
-	case 9:
-		imgfile = "C:\\Users\\koen\\Documents\\HU-Vision-Team-Koen\\testsets\\Set A\\TestSet Images\\male-3.png";
-		break;
-	case 10:
-		imgfile = "C:\\Users\\koen\\Documents\\HU-Vision-Team-Koen\\testsets\\Set A\\TestSet Images\\milf-3.png";
-		break;
-	case 11:
-		imgfile = "C:\\Users\\koen\\Documents\\HU-Vision-Team-Koen\\testsets\\Set A\\TestSet Images\\pineapple.png";
-		break;
-	case 12:
+	case 5:
 		imgfile = "C:\\Users\\koen\\Documents\\HU-Vision-Team-Koen\\testsets\\Set A\\TestSet Images\\child-1.png";
+		break;
+	case 6:
+		imgfile = "C:\\Users\\koen\\Documents\\HU-Vision-Team-Koen\\testsets\\Set A\\TestSet Images\\kippetje.jpg";
+		break;
+	case 7:
+		imgfile = "C:\\Users\\koen\\Documents\\HU-Vision-Team-Koen\\testsets\\Set A\\TestSet Images\\blabla.jpg";
 		break;
 	default:
 		imgfile = "C:\\Users\\koen\\Documents\\HU-Vision-Team-Koen\\testsets\\Set A\\TestSet Images\\child-1.png";
