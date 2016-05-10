@@ -5,6 +5,18 @@
 #include "HereBeDragons.h"
 #include "ImageIO.h"
 
+struct pixelCount {
+	pixelCount(int leftCount, int middelCount,int rightCount){
+		left = leftCount;
+		middel = middelCount;
+		right = rightCount;
+	}
+	//pixelCount(const IntensityImage &image,int y ,int left, int middel, int right,){}
+	int left;
+	int middel;
+	int right;
+};
+
 Feature StudentLocalization::headTop(const IntensityImage &image) const{
 	unsigned int center = image.getWidth()/2;
 	const unsigned int default_y_step = 1;
@@ -106,39 +118,74 @@ bool StudentLocalization::stepFindHead(const IntensityImage &imageIn, FeatureMap
 		[](const std::pair<int, int>& p1, const std::pair<int, int>& p2) {
 		return p1.second < p2.second; })->first;
 
-	/*
-	std::map <int, int> numberOfPixelsPerYaxisHead{};
+	//test code koen
+	const int whiteCountMax = 25;
 
-	for (int dY = int(height - ((height - headTopY) * (100 - percentageForHead)) / 100); dY < height; dY += stepTwoY){
-		for (int dX = (leftSideXaxis + margeLeftAndRight); dX < (headTopX - (margeCenterLeftRight*4) ); dX += stepTwoX){ //checking only left side of the head to determine wangs.
-			Intensity currentPixel = imageIn.getPixel(dX, dY);
-			if (currentPixel == 0){
-				numberOfPixelsPerYaxisHead[dY] += 1;
-			}
+	int y = features.getFeature(Feature::FEATURE_HEAD_TOP).getY();
+	//seek first pixel
+	for (y; y < imageIn.getHeight(); ++y){
+		if (imageIn.getPixel(leftSideXaxis, y) < 50){
+			break;
 		}
 	}
+	std::cout << "line begins on y: " << y << " on x:" << leftSideXaxis << std::endl;
+	//seek last pixel
+	int whiteCount = 0;
+	int lastPixelAt = 0;
+	for (y; y < imageIn.getHeight(); ++y){
+		++whiteCount;
+		//if pixel is black....
+		if (imageIn.getPixel(leftSideXaxis, y) < 50){
+			whiteCount = 0;
+			lastPixelAt = y;
+			std::cout << "found black pixel @ " << y << std::endl;
+		}
+		if (whiteCount>whiteCountMax){
+			break;
+		}
 
-	for (auto it = numberOfPixelsPerYaxisHead.cbegin(); it != numberOfPixelsPerYaxisHead.cend(); ++it)
-	{
-		std::cout << it->first << " --> " << it->second << "\n";
 	}
-	*/
+	int leftLastPixelAt = lastPixelAt;
 
-	features.putFeature(Feature(Feature::FEATURE_HEAD_LEFT_SIDE, Point2D<double>(leftSideXaxis, possibleCenterYaxis)));
-	features.putFeature(Feature(Feature::FEATURE_HEAD_RIGHT_SIDE, Point2D<double>(rightSideXaxis, possibleCenterYaxis)));
+	std::cout << "doing right side" << std::endl;
+	y = 0;
+	for (y; y < imageIn.getHeight(); ++y){
+		if (imageIn.getPixel(rightSideXaxis, y) < 50){
+			break;
+		}
+	}
+	 whiteCount = 0;
+	 lastPixelAt = 0;
+	for (y; y < imageIn.getHeight(); ++y){
+		++whiteCount;
+		//if pixel is black....
+		if (imageIn.getPixel(rightSideXaxis, y) < 50){
+			whiteCount = 0;
+			lastPixelAt = y;
+			std::cout << "found black pixel @ " << y << std::endl;
+		}
+		if (whiteCount>whiteCountMax){
+			break;
+		}
+
+	}
+	int rightLastPixelAt = lastPixelAt;
+
+	if (leftLastPixelAt<rightLastPixelAt){
+		lastPixelAt = leftLastPixelAt;
+	}
+
+
+	std::cout << "last pixel @: " << lastPixelAt << std::endl;
+
+	features.putFeature(Feature(Feature::FEATURE_HEAD_LEFT_SIDE, Point2D<double>(leftSideXaxis, lastPixelAt)));
+	features.putFeature(Feature(Feature::FEATURE_HEAD_RIGHT_SIDE, Point2D<double>(rightSideXaxis, lastPixelAt)));
+
 
 	std::cout << "Left Side location x-axis:  (" << features.getFeature(Feature::FEATURE_HEAD_LEFT_SIDE).getX() << ", " << features.getFeature(Feature::FEATURE_HEAD_LEFT_SIDE).getY() << ")\n";
 	std::cout << "Right Side location x-axis:  (" << features.getFeature(Feature::FEATURE_HEAD_RIGHT_SIDE).getX() << ", " << features.getFeature(Feature::FEATURE_HEAD_RIGHT_SIDE).getY() << ")\n";
 	std::cout << "Top head location x-axis: (" << features.getFeature(Feature::FEATURE_HEAD_TOP).getX() << ", " << features.getFeature(Feature::FEATURE_HEAD_TOP).getY() << ")\n";
 
-		
-
-	//int highestValueLeftSide = numberOfPixelsPerXaxis
-
-	//for (auto it = numberOfPixelsPerXaxis.cbegin(); it != numberOfPixelsPerXaxis.cend(); ++it)
-	//{
-	//	std::cout << it->first << " --> " << it->second << "\n";
-	//}
 
 	IntensityImage * image = ImageFactory::newIntensityImage();
 	HereBeDragons::SonnetCLI(imageIn, *image);
@@ -159,22 +206,6 @@ bool StudentLocalization::stepFindHead(const IntensityImage &imageIn, FeatureMap
 	ImageIO::saveRGBImage(*outImageRGB, ImageIO::getDebugFileName("Localization-1/debug.png"));
 	delete outImageRGB;
 	delete image;
-
-	//working images:
-
-	//child-1.png
-	//female-1.png
-	//female-3.png == but NOT WORKING with Arno's version, we made it better :) I added an option for middle marge.
-	//male-3.png
-	//bouke-1.png == but NOT WORKING with Arno's version.
-	
-
-	//not working:
-	//female-2.png == but working with Arno's working
-	//male-1.png == but working with Arno's verion.
-	//male-2.png == but working with Arno's verion.
-	//koen-2.png == NOT WORKING
-	//arno-1.png == NOT WORKING.
 
 	return true;
 }
