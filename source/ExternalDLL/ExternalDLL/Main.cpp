@@ -39,7 +39,7 @@ int main(int argc, char * argv[]) {
 	12 = succes
 
 	*/
-	switch (7)
+	switch (6)
 	{
 	case 1:
 		imgfile = "C:\\Users\\koen\\Documents\\HU-Vision-Team-Koen\\testsets\\Set A\\TestSet Images\\arno-1.png";
