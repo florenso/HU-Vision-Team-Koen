@@ -12,7 +12,7 @@
 
 void drawFeatureDebugImage(IntensityImage &image, FeatureMap &features);
 bool executeSteps(DLLExecution * executor);
-bool useKoenSquareFaceLocalization = false;
+bool useKoenSquareFaceLocalization = true;
 
 std::string currentImageFile = "";
 
@@ -38,35 +38,36 @@ int main(int argc, char * argv[]) {
 		switch (numberImage)
 		{
 		case 1:
-			currentImageFile = "female-1.png";
-			break;
-		case 2:
-			currentImageFile = "female-3.png";
-			break;
-		case 3:
-			currentImageFile = "male-1.png";
-			break;
-		case 4:
-			currentImageFile = "male-2.png";
-			break;
-		case 5:
-			currentImageFile = "child-1.png";
-			break;
-		case 6:
-			currentImageFile = "kippetje.jpg";
-			break;
-		case 7:
-			currentImageFile = "blabla.jpg";
-			break;
-		case 8:
 			currentImageFile = "arno.png";
 			break;
-		case 9:
+		case 2:
+			currentImageFile = "blabla.jpg";
+			break;
+		case 3:
+			currentImageFile = "child-1.png";
+			break;
+		case 4:
+			currentImageFile = "female-1.png";
+			break;
+		case 5:
+			currentImageFile = "female-3.png";
+			break;
+		case 6:
 			currentImageFile = "kakkerlak.jpg";
+			break;
+		case 7:
+			currentImageFile = "kippetje.jpg";
+			break;
+		case 8:
+			currentImageFile = "male-1.png";
+			break;
+		case 9:
+			currentImageFile = "male-2.png";
 			break;
 		default:
 			currentImageFile = "child-1.png";
 		}
+
 
 		std::cout << "First round with: " << currentImageFile << "\n\n";
 
