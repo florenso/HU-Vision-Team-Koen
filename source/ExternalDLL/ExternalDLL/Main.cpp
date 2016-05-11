@@ -12,79 +12,95 @@
 
 void drawFeatureDebugImage(IntensityImage &image, FeatureMap &features);
 bool executeSteps(DLLExecution * executor);
+bool useKoenSquareFaceLocalization = false;
+
+std::string currentImageFile = "";
 
 int main(int argc, char * argv[]) {
-
 
 	//ImageFactory::setImplementation(ImageFactory::DEFAULT);
 	ImageFactory::setImplementation(ImageFactory::STUDENT);
 
+	for (int numberImage = 1; numberImage <= 9; ++numberImage){
+		
+		
+		/*
+		1: female-1.png	= succes
+		2: female-3.png = succes
+		3: male-1.png	= Localization step 4 failed: eyes have not been found!
+		4: male-2.png	= Localization step 4 failed: eyes have not been found!
+		5: child-1.png	= succes
+		6: kippetje.png = Localization step 5 failed!
+		7: blabla.png	=
 
-	ImageIO::debugFolder = "C:\\Users\\koen\\Documents\\HU-Vision-Team-Koen\\debugfolder";
-	ImageIO::isInDebugMode = true; //If set to false the ImageIO class will skip any image save function calls
+		*/
 
-	std::string imgfile;
-	/*
-	1: female-1.png	= succes
-	2: female-3.png = succes
-	3: male-1.png	= Localization step 4 failed: eyes have not been found!
-	4: male-2.png	= Localization step 4 failed: eyes have not been found!
-	5: child-1.png	= succes
-	6: kippetje.png = Localization step 5 failed!
-	7: blabla.png	=
-
-	*/
-
-	switch (4)
-	{
-	case 1:
-		imgfile = "C:\\Users\\koen\\Documents\\HU-Vision-Team-Koen\\testsets\\Set A\\TestSet Images\\female-1.png";
-		break;
-	case 2:
-		imgfile = "C:\\Users\\koen\\Documents\\HU-Vision-Team-Koen\\testsets\\Set A\\TestSet Images\\female-3.png";
-		break;
-	case 3:
-		imgfile = "C:\\Users\\koen\\Documents\\HU-Vision-Team-Koen\\testsets\\Set A\\TestSet Images\\male-1.png";
-		break;
-	case 4:
-		imgfile = "C:\\Users\\koen\\Documents\\HU-Vision-Team-Koen\\testsets\\Set A\\TestSet Images\\male-2.png";
-		break;
-	case 5:
-		imgfile = "C:\\Users\\koen\\Documents\\HU-Vision-Team-Koen\\testsets\\Set A\\TestSet Images\\child-1.png";
-		break;
-	case 6:
-		imgfile = "C:\\Users\\koen\\Documents\\HU-Vision-Team-Koen\\testsets\\Set A\\TestSet Images\\kippetje.jpg";
-		break;
-	case 7:
-		imgfile = "C:\\Users\\koen\\Documents\\HU-Vision-Team-Koen\\testsets\\Set A\\TestSet Images\\blabla.jpg";
-		break;
-	default:
-		imgfile = "C:\\Users\\koen\\Documents\\HU-Vision-Team-Koen\\testsets\\Set A\\TestSet Images\\child-1.png";
-	}
-
-	RGBImage * input = ImageFactory::newRGBImage();
-
-	if (!ImageIO::loadImage(imgfile, *input)) {
-		std::cout << "Image could not be loaded!" << std::endl;
-		system("pause");
-		return 0;
-	}
-
-
-	ImageIO::saveRGBImage(*input, ImageIO::getDebugFileName("debug.png"));
-
-	DLLExecution * executor = new DLLExecution(input);
-
-
-	if (executeSteps(executor)) {
-		std::cout << "Face recognition successful!" << std::endl;
-		std::cout << "Facial parameters: " << std::endl;
-		for (int i = 0; i < 16; i++) {
-			std::cout << (i+1) << ": " << executor->facialParameters[i] << std::endl;
+		switch (numberImage)
+		{
+		case 1:
+			currentImageFile = "female-1.png";
+			break;
+		case 2:
+			currentImageFile = "female-3.png";
+			break;
+		case 3:
+			currentImageFile = "male-1.png";
+			break;
+		case 4:
+			currentImageFile = "male-2.png";
+			break;
+		case 5:
+			currentImageFile = "child-1.png";
+			break;
+		case 6:
+			currentImageFile = "kippetje.jpg";
+			break;
+		case 7:
+			currentImageFile = "blabla.jpg";
+			break;
+		case 8:
+			currentImageFile = "arno.png";
+			break;
+		case 9:
+			currentImageFile = "kakkerlak.jpg";
+			break;
+		default:
+			currentImageFile = "child-1.png";
 		}
-	}
 
-	delete executor;
+		std::cout << "First round with: " << currentImageFile << "\n\n";
+
+
+
+
+		ImageIO::debugFolder = "C:\\Users\\koen\\Documents\\HU-Vision-Team-Koen\\debugfolder\\" + currentImageFile;
+		ImageIO::isInDebugMode = true; //If set to false the ImageIO class will skip any image save function calls
+
+
+		RGBImage * input = ImageFactory::newRGBImage();
+
+		if (!ImageIO::loadImage("C:\\Users\\koen\\Documents\\HU-Vision-Team-Koen\\testsets\\Set A\\TestSet Images\\" + currentImageFile, *input)) {
+			std::cout << "Image could not be loaded!" << std::endl;
+			system("pause");
+			return 0;
+		}
+
+
+		ImageIO::saveRGBImage(*input, ImageIO::getDebugFileName("debug.png"));
+
+		DLLExecution * executor = new DLLExecution(input);
+
+
+		if (executeSteps(executor)) {
+			std::cout << "Face recognition successful!" << std::endl;
+			std::cout << "Facial parameters: " << std::endl;
+			for (int i = 0; i < 16; i++) {
+				std::cout << (i + 1) << ": " << executor->facialParameters[i] << std::endl;
+			}
+		}
+
+		delete executor;
+	}
 	system("pause");
 	return 1;
 }
@@ -123,7 +139,7 @@ bool executeSteps(DLLExecution * executor) {
 		return false;
 	}
 
-	if (!executor->executeLocalizationStep1(true)) {
+	if (!executor->executeLocalizationStep1(useKoenSquareFaceLocalization)) {
 		std::cout << "Localization step 1 failed!" << std::endl;
 		return false;
 	}
@@ -249,6 +265,6 @@ void drawFeatureDebugImage(IntensityImage &image, FeatureMap &features) {
 	HereBeDragons::TriumphInLoveFleshStaysNoFatherReason(*debug, mouthLeft, colorRed);
 	HereBeDragons::TriumphInLoveFleshStaysNoFatherReason(*debug, mouthRight, colorRed);
 
-	ImageIO::saveRGBImage(*debug, ImageIO::getDebugFileName("feature-points-debug.png"));
+	ImageIO::saveRGBImage(*debug, ImageIO::getDebugFileName("../feature-points-debug-" + currentImageFile + ".png"));
 	delete debug;
 }

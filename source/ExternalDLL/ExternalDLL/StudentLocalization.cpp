@@ -5,6 +5,8 @@
 #include "HereBeDragons.h"
 #include "ImageIO.h"
 
+static int currentImageNumber = 0;
+
 struct pixelCount {
 	pixelCount(int leftCount, int middelCount,int rightCount){
 		left = leftCount;
@@ -128,7 +130,7 @@ bool StudentLocalization::stepFindHead(const IntensityImage &imageIn, FeatureMap
 			break;
 		}
 	}
-	std::cout << "line begins on y: " << y << " on x:" << leftSideXaxis << std::endl;
+	//std::cout << "line begins on y: " << y << " on x:" << leftSideXaxis << std::endl;
 	//seek last pixel
 	int whiteCount = 0;
 	int lastPixelAt = 0;
@@ -138,7 +140,7 @@ bool StudentLocalization::stepFindHead(const IntensityImage &imageIn, FeatureMap
 		if (imageIn.getPixel(leftSideXaxis, y) < 50){
 			whiteCount = 0;
 			lastPixelAt = y;
-			std::cout << "found black pixel @ " << y << std::endl;
+			//std::cout << "found black pixel @ " << y << std::endl;
 		}
 		if (whiteCount>whiteCountMax){
 			break;
@@ -147,7 +149,7 @@ bool StudentLocalization::stepFindHead(const IntensityImage &imageIn, FeatureMap
 	}
 	int leftLastPixelAt = lastPixelAt;
 
-	std::cout << "doing right side" << std::endl;
+	//std::cout << "doing right side" << std::endl;
 	y = 0;
 	for (y; y < imageIn.getHeight(); ++y){
 		if (imageIn.getPixel(rightSideXaxis, y) < 50){
@@ -162,7 +164,7 @@ bool StudentLocalization::stepFindHead(const IntensityImage &imageIn, FeatureMap
 		if (imageIn.getPixel(rightSideXaxis, y) < 50){
 			whiteCount = 0;
 			lastPixelAt = y;
-			std::cout << "found black pixel @ " << y << std::endl;
+			//std::cout << "found black pixel @ " << y << std::endl;
 		}
 		if (whiteCount>whiteCountMax){
 			break;
@@ -176,7 +178,7 @@ bool StudentLocalization::stepFindHead(const IntensityImage &imageIn, FeatureMap
 	}
 
 
-	std::cout << "last pixel @: " << lastPixelAt << std::endl;
+	//std::cout << "last pixel @: " << lastPixelAt << std::endl;
 
 	features.putFeature(Feature(Feature::FEATURE_HEAD_LEFT_SIDE, Point2D<double>(leftSideXaxis, lastPixelAt)));
 	features.putFeature(Feature(Feature::FEATURE_HEAD_RIGHT_SIDE, Point2D<double>(rightSideXaxis, lastPixelAt)));
@@ -203,7 +205,8 @@ bool StudentLocalization::stepFindHead(const IntensityImage &imageIn, FeatureMap
 	//Save debug image
 	RGBImage * outImageRGB = ImageFactory::newRGBImage();
 	HereBeDragons::HeIsContentedThyPoorDrudgeToBe(outImage, *outImageRGB);
-	ImageIO::saveRGBImage(*outImageRGB, ImageIO::getDebugFileName("Localization-1/debug.png"));
+	ImageIO::saveRGBImage(*outImageRGB, ImageIO::getDebugFileName("../" + std::to_string(currentImageNumber) + "-Localization.png"));
+	currentImageNumber++;
 	delete outImageRGB;
 	delete image;
 
