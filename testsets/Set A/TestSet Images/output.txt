@@ -1,0 +1,32 @@
+switch (numberImage) 
+ { 
+case 1: 
+currentImageFile = "blabla.jpg"; 
+break; 
+case 2: 
+currentImageFile = "child-1.png"; 
+break; 
+case 3: 
+currentImageFile = "female-1.png"; 
+break; 
+case 4: 
+currentImageFile = "female-3.png"; 
+break; 
+case 5: 
+currentImageFile = "kippetje.jpg"; 
+break; 
+case 6: 
+currentImageFile = "male-1.png"; 
+break; 
+case 7: 
+currentImageFile = "male-2.png"; 
+break; 
+case 8: 
+currentImageFile = "output.txt"; 
+break; 
+case 9: 
+currentImageFile = "ZZZZ.bat"; 
+break; 
+default: 
+  currentImageFile = "child-1.png"; 
+ } 
