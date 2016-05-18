@@ -23,10 +23,29 @@ IntensityImage * StudentPreProcessing::stepScaleImage(const IntensityImage &imag
 
 IntensityImage * StudentPreProcessing::stepEdgeDetection(const IntensityImage &image) const {
 	myMask ConvertoEdges = myMask();
-	ConvertoEdges.
+	Intensity woop[]{
+		0, 0, 0, 1, 1, 1, 0, 0, 0,
+			0, 0, 0, 1, 1, 1, 0, 0, 0,
+			0, 0, 0, 1, 1, 1, 0, 0, 0,
+			1, 1, 1, -4, -4, -4, 1, 1, 1,
+			1, 1, 1, -4, -4, -4, 1, 1, 1,
+			1, 1, 1, -4, -4, -4, 1, 1, 1,
+			0, 0, 0, 1, 1, 1, 0, 0, 0,
+			0, 0, 0, 1, 1, 1, 0, 0, 0,
+			0, 0, 0, 1, 1, 1, 0, 0, 0};
 
+	Intensity woop1[]{
+			0, 1, 0,
+			1, -4, 1,
+			0, 1, 0
+	};
 
-	return nullptr;
+	mask UsingMask = mask(1);
+	UsingMask.setMask(woop1);
+	
+	IntensityImage * ing = ConvertoEdges.laplacian(image, UsingMask);
+
+	return ing;
 }
 
 IntensityImage * StudentPreProcessing::stepThresholding(const IntensityImage &image) const {
