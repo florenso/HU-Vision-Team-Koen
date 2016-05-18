@@ -1,5 +1,6 @@
 #pragma once
 #include "IntensityImage.h"
+#include "ImageFactory.h"
 #include <array>
 #include <iterator>
 #include <cmath>
@@ -18,6 +19,7 @@ public:
 		negOffset = offset *-1;
 		width = 1 + (radius * 2);
 	}
+
 	unsigned int getpixel(int x, int y){
 		return msk[(x + offset) + ((y + offset)*width)];
 	}
@@ -50,7 +52,18 @@ public:
 	~myMask();
 
 	//edit de img
-	void laplacian(IntensityImage *img, mask& mask);
+	IntensityImage * laplacian(const IntensityImage & img, mask& maskje){
+		int width = img.getWidth();
+		int height = img.getHeight();
+		IntensityImage * newImage = ImageFactory::newIntensityImage(img.getWidth(), img.getHeight());
+		const int size = img.getWidth() * img.getHeight();
+
+		for (int i = 0; i < size; i++) {
+			Intensity editPixel = laplacianPixel(img, i % width, (int)(i / height), maskje);
+			newImage->setPixel(i, editPixel);
+		}
+		return newImage;
+	}
 
 	//calculeerd intensety
 	Intensity laplacianPixel(const IntensityImage &img, unsigned int x, unsigned int y,mask &mask){
