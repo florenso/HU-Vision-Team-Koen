@@ -18,6 +18,11 @@ public:
 		negOffset = offset *-1;
 		width = 1 + (radius * 2);
 	}
+
+	void setMask(Intensity * newmask){
+		msk = newmask;
+	}
+
 	unsigned int getpixel(int x, int y){
 		return msk[(x + offset) + ((y + offset)*width)];
 	}
@@ -25,7 +30,6 @@ public:
 	void setpixel(int x, int y, Intensity pixel){
 		msk[(x + offset) + ((y + offset)*width)] = pixel;
 	}
-
 
 	int getBegin(){//om begin van mask te pakken (voor zowel x als y)
 		return negOffset;
@@ -38,9 +42,6 @@ public:
 	int getWidth(){
 		return width;
 	}
-
-
-	
 };
 
 class myMask
@@ -69,6 +70,25 @@ public:
 		if (val < 0){ return (Intensity)0; }
 		return (Intensity)255;
 	
+	}
+
+	void tmp(){
+		Intensity woop[]{
+				0, 0, 0, 1, 1, 1, 0, 0, 0,
+				0, 0, 0, 1, 1, 1, 0, 0, 0,
+				0, 0, 0, 1, 1, 1, 0, 0, 0,
+				1, 1, 1, -4, -4, -4, 1, 1, 1,
+				1, 1, 1, -4, -4, -4, 1, 1, 1,
+				1, 1, 1, -4, -4, -4, 1, 1, 1,
+				0, 0, 0, 1, 1, 1, 0, 0, 0,
+				0, 0, 0, 1, 1, 1, 0, 0, 0,
+				0, 0, 0, 1, 1, 1, 0, 0, 0};
+
+		Intensity woop1[]{
+			0,1,0,
+			1,-4,1,
+			0,1,0
+		};
 	}
 };
 
