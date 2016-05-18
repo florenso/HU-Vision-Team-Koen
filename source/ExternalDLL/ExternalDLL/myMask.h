@@ -10,25 +10,25 @@ struct mask{ //center is always 0,0
 private:
 	int offset;//zorgt er voor dat x negatief kan zijn om de array te benaderen
 	int width;// om de rij breedte te gebruiken om alles in een array te krijgen..
-	Intensity* msk; //dit is de mask array
+	int * msk; //dit is de mask array
 	int negOffset;
 
 public:
-	mask(unsigned int radius) : msk(new Intensity[ (int)pow(( 1 + radius * 2),2) ] ){ //1 = 1 pixel size mask\k & 2=9(3x3)pixelsize mask
+	mask(unsigned int radius) : msk(new int[ (int)pow(( 1 + radius * 2),2) ] ){ //1 = 1 pixel size mask\k & 2=9(3x3)pixelsize mask
 		offset = radius;
 		negOffset = offset *-1;
 		width = 1 + (radius * 2);
 	}
 
-	void setMask(Intensity * newmask){
+	void setMask(int * newmask){
 		msk = newmask;
 	}
 
-	unsigned int getpixel(int x, int y){
+	int getpixel(int x, int y){
 		return msk[(x + offset) + ((y + offset)*width)];
 	}
 
-	void setpixel(int x, int y, Intensity pixel){
+	void setpixel(int x, int y, int pixel){
 		msk[(x + offset) + ((y + offset)*width)] = pixel;
 	}
 
@@ -58,29 +58,39 @@ public:
 		IntensityImage * newImage = ImageFactory::newIntensityImage(img.getWidth(), img.getHeight());
 		const int size = img.getWidth() * img.getHeight();
 
-		for (int i = 0; i < size; i++) {
-			Intensity editPixel = laplacianPixel(img, i % width, (int)(i / height), maskje);
-			newImage->setPixel(i, editPixel);
+		for (int x = 0; x < width; x++){
+			for (int y = 0; y < height; y++)
+			{
+				Intensity editPixel = laplacianPixel(img, x, y, maskje);
+				newImage->setPixel(x,y, editPixel);
+			}
 		}
+
+
 		return newImage;
 	}
 
 	//calculeerd intensety
 	Intensity laplacianPixel(const IntensityImage &img, unsigned int x, unsigned int y,mask &mask){
 		int val = 0;
-		for (int x1 = mask.getBegin(); x1 < mask.getEnd(); x1++){
-			for (int y1 = mask.getBegin(); y1 < mask.getEnd(); y1++){
-				try{
-					val += img.getPixel(x + x1, y + y1)*mask.getpixel(x1,y1);
+		for (int x1 = mask.getBegin(); x1 <= mask.getEnd(); x1++){
+			for (int y1 = mask.getBegin(); y1 <= mask.getEnd(); y1++){
+				if ((x + x1 <= img.getWidth() && x + x1 >= 0) && (y + y1 <= img.getHeight() && y + y1 >= 0)){
+					val += (int)img.getPixel(x + x1, y + y1)*(int)mask.getpixel(x1, y1);
+
 				}
-				catch (std::exception ex){
-					std::cout << "pixel out of range, make propper catch code for this" << std::endl;
+				else{
+					val += 0;
 				}
+
 			}
 		}
-		val = val / pow(mask.getWidth(), 2);
 		if (val < 0){ return (Intensity)0; }
-		return (Intensity)255;
+		else if (val>255){ return (Intensity)255; }
+		else{
+			return (Intensity)val;
+		}
+		
 	
 	}
 };
