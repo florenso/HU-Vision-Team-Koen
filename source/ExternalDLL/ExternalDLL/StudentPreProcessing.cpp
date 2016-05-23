@@ -45,6 +45,7 @@ IntensityImage * StudentPreProcessing::stepEdgeDetection(const IntensityImage &i
 	
 	IntensityImage * ing = ConvertoEdges.laplacian(image, UsingMask);
 
+
 	return ing;
 }
 

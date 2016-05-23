@@ -396,11 +396,16 @@ bool DLLExecution::executePreProcessingStep3(bool student) {
 	if (!resultPreProcessingStep2) {
 		return false;
 	}
+	std::chrono::high_resolution_clock::time_point t1 = std::chrono::high_resolution_clock::now();
 	if (student) {
 		resultPreProcessingStep3 = studentPreProcessing.stepEdgeDetection(*resultPreProcessingStep2);
 	} else {
 		resultPreProcessingStep3 = defaultPreProcessing.stepEdgeDetection(*resultPreProcessingStep2);
 	}
+	std::chrono::high_resolution_clock::time_point t2 = std::chrono::high_resolution_clock::now();
+	auto duration = std::chrono::duration_cast<std::chrono::microseconds>(t2 - t1).count();
+	std::cout << "stepThresholding: " << duration << std::endl;
+
 	return resultPreProcessingStep3 != NULL;
 }
 
@@ -409,7 +414,7 @@ bool DLLExecution::executePreProcessingStep4(bool student) {
 		return false;
 	}
 
-	std::chrono::high_resolution_clock::time_point t1 = std::chrono::high_resolution_clock::now();
+	//std::chrono::high_resolution_clock::time_point t1 = std::chrono::high_resolution_clock::now();
 
 	if (student) {
 		resultPreProcessingStep4 = studentPreProcessing.stepThresholding(*resultPreProcessingStep3);
@@ -417,10 +422,9 @@ bool DLLExecution::executePreProcessingStep4(bool student) {
 		resultPreProcessingStep4 = defaultPreProcessing.stepThresholding(*resultPreProcessingStep3);
 	}
 
-	std::chrono::high_resolution_clock::time_point t2 = std::chrono::high_resolution_clock::now();
+	//std::chrono::high_resolution_clock::time_point t2 = std::chrono::high_resolution_clock::now();
+	//auto duration = std::chrono::duration_cast<std::chrono::microseconds>(t2 - t1).count();
+	//std::cerr << "stepThresholding: " << duration << std::endl;
 
-	auto duration = std::chrono::duration_cast<std::chrono::microseconds>(t2 - t1).count();
-
-	std::cerr << "stepThresholding: " << duration << std::endl;
 	return resultPreProcessingStep4 != NULL;
 }

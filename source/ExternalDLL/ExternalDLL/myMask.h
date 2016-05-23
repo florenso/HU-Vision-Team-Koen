@@ -20,6 +20,11 @@ public:
 		width = 1 + (radius * 2);
 	}
 
+	~mask(){
+		//delete msk;
+	}
+
+
 	void setMask(int * newmask){
 		msk = newmask;
 	}
