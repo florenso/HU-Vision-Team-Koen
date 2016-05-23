@@ -183,7 +183,7 @@ bool executeSteps(DLLExecution * executor) {
 		return false;
 	}
 
-	if (!executor->executeExtractionStep3(false)) {
+	if (!executor->executeExtractionStep3(true)) {
 		std::cout << "Extraction step 3 failed!" << std::endl;
 		return false;
 	}
