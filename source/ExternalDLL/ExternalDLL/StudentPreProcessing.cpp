@@ -1,9 +1,11 @@
 #include "StudentPreProcessing.h"
 #include "IntensityImageStudent.h"
+#include "ImageFactory.h"
+#include "myMask.h"
 #include <minmax.h>
 
 IntensityImage * StudentPreProcessing::stepToIntensityImage(const RGBImage &image) const {
-	IntensityImageStudent * iImg = new IntensityImageStudent(image.getWidth(), image.getHeight());
+	IntensityImage * iImg = ImageFactory::newIntensityImage(image.getWidth(), image.getHeight());
 	const int size = image.getWidth()* image.getHeight();
 		for(int i=0; i < size; i++){
 			RGB pixel = image.getPixel(i);
@@ -20,9 +22,49 @@ IntensityImage * StudentPreProcessing::stepScaleImage(const IntensityImage &imag
 }
 
 IntensityImage * StudentPreProcessing::stepEdgeDetection(const IntensityImage &image) const {
-	return nullptr;
+	myMask ConvertoEdges = myMask();
+	int woop[]{
+			0, 0, 0, 1, 1, 1, 0, 0, 0,
+			0, 0, 0, 1, 1, 1, 0, 0, 0,
+			0, 0, 0, 1, 1, 1, 0, 0, 0,
+			1, 1, 1, -4, -4, -4, 1, 1, 1,
+			1, 1, 1, -4, -4, -4, 1, 1, 1,
+			1, 1, 1, -4, -4, -4, 1, 1, 1,
+			0, 0, 0, 1, 1, 1, 0, 0, 0,
+			0, 0, 0, 1, 1, 1, 0, 0, 0,
+			0, 0, 0, 1, 1, 1, 0, 0, 0};
+
+	int woop1[]{
+			0, 1, 0,
+			1, -4, 1,
+			0, 1, 0
+	};
+
+	mask UsingMask = mask(4);
+	UsingMask.setMask(woop);
+	
+	IntensityImage * ing = ConvertoEdges.laplacian(image, UsingMask);
+
+
+	return ing;
 }
 
 IntensityImage * StudentPreProcessing::stepThresholding(const IntensityImage &image) const {
-	return nullptr;
+	Intensity max{ 255 };
+	Intensity min{ 0 };
+	int T = 220;
+	IntensityImage * newImage = ImageFactory::newIntensityImage(image.getWidth(), image.getHeight());
+	for (int x = 0; x < image.getWidth(); ++x){
+		for (int y = 0; y < image.getHeight(); ++y)
+		{
+			if (image.getPixel(x,y)>T){
+				newImage->setPixel(x, y, min);
+			}
+			else {
+				newImage->setPixel(x, y, max);
+			}
+			
+		}
+	}
+	return newImage;
 }
