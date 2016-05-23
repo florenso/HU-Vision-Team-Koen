@@ -20,6 +20,10 @@ public:
 		width = 1 + (radius * 2);
 	}
 
+	~mask(){
+		delete msk;
+	}
+
 	void setMask(int * newmask){
 		msk = newmask;
 	}
@@ -49,7 +53,7 @@ class myMask
 {
 public:
 	myMask();
-	~myMask();
+
 
 	//edit de img
 	IntensityImage * laplacian(const IntensityImage & img, mask& maskje){
@@ -69,6 +73,8 @@ public:
 
 		return newImage;
 	}
+
+
 
 	//calculeerd intensety
 	Intensity laplacianPixel(const IntensityImage &img, unsigned int x, unsigned int y,mask &mask){
