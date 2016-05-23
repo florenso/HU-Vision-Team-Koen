@@ -49,5 +49,21 @@ IntensityImage * StudentPreProcessing::stepEdgeDetection(const IntensityImage &i
 }
 
 IntensityImage * StudentPreProcessing::stepThresholding(const IntensityImage &image) const {
-	return nullptr;
+	Intensity max{ 255 };
+	Intensity min{ 0 };
+	int T = 220;
+	IntensityImage * newImage = ImageFactory::newIntensityImage(image.getWidth(), image.getHeight());
+	for (int x = 0; x < image.getWidth(); ++x){
+		for (int y = 0; y < image.getHeight(); ++y)
+		{
+			if (image.getPixel(x,y)>T){
+				newImage->setPixel(x, y, min);
+			}
+			else {
+				newImage->setPixel(x, y, max);
+			}
+			
+		}
+	}
+	return newImage;
 }

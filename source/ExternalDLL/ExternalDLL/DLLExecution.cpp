@@ -9,6 +9,7 @@
 #include "ImageIO.h"
 #include "HereBeDragons.h"
 #include "ImageFactory.h"
+#include <chrono>
 
 DLLExecution::DLLExecution(RGBImage * inputImage):
 	inputImage(inputImage),
@@ -407,10 +408,19 @@ bool DLLExecution::executePreProcessingStep4(bool student) {
 	if (!resultPreProcessingStep3) {
 		return false;
 	}
+
+	std::chrono::high_resolution_clock::time_point t1 = std::chrono::high_resolution_clock::now();
+
 	if (student) {
 		resultPreProcessingStep4 = studentPreProcessing.stepThresholding(*resultPreProcessingStep3);
 	} else {
 		resultPreProcessingStep4 = defaultPreProcessing.stepThresholding(*resultPreProcessingStep3);
 	}
+
+	std::chrono::high_resolution_clock::time_point t2 = std::chrono::high_resolution_clock::now();
+
+	auto duration = std::chrono::duration_cast<std::chrono::microseconds>(t2 - t1).count();
+
+	std::cerr << "stepThresholding: " << duration << std::endl;
 	return resultPreProcessingStep4 != NULL;
 }

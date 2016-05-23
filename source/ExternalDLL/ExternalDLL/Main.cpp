@@ -21,7 +21,7 @@ int main(int argc, char * argv[]) {
 	//ImageFactory::setImplementation(ImageFactory::DEFAULT);
 	ImageFactory::setImplementation(ImageFactory::STUDENT);
 
-	for (int numberImage = 1; numberImage <= 1; ++numberImage){
+	for (int numberImage = 1; numberImage <= 9; ++numberImage){
 		
 		
 		/*
@@ -126,7 +126,7 @@ bool executeSteps(DLLExecution * executor) {
 	}
 	ImageIO::saveIntensityImage(*executor->resultPreProcessingStep3, ImageIO::getDebugFileName("Pre-processing-3.png"));
 
-	if (!executor->executePreProcessingStep4(false)) {
+	if (!executor->executePreProcessingStep4(true)) {
 		std::cout << "Pre-processing step 4 failed!" << std::endl;
 		return false;
 	}
